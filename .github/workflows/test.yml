@@ -2,6 +2,7 @@ name: Test
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   npm7-legacy-peer-deps-docker:
