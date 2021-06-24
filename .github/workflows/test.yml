@@ -4,23 +4,23 @@ on:
   push:
 
 jobs:
-  npm7-docker:
-    name: NPM 7 install in Docker on Node ${{ matrix.node }}
+  npm7-legacy-peer-deps-docker:
+    name: NPM 7 install legacy-peer-deps in Docker image node:${{ matrix.node-image }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12, 14, 16]
+        node-image: ['14', '14-alpine', '16', '16-alpine']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node }}-alpine /bin/sh -c "npm i -g npm@7 && npm i --legacy-peer-deps --verbose"
-  npm7-local:
-    name: NPM 7 install local on Node ${{ matrix.node }}
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7 && npm i --legacy-peer-deps --verbose"
+  npm7-legacy-peer-deps-local:
+    name: NPM 7 install --legacy-peer-deps local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12, 14, 16]
+        node: [14, 16]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -32,23 +32,51 @@ jobs:
         run: npm i -g npm@7
       - name: NPM install
         run: npm i --legacy-peer-deps --verbose
-  npm6-docker:
-    name: NPM 6 install in Docker on Node ${{ matrix.node }}
+  npm7-docker:
+    name: NPM 7 install in Docker image node:${{ matrix.node-image }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12, 14, 16]
+        node-image: ['14', '14-alpine', '16', '16-alpine']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node }}-alpine /bin/sh -c "npm i -g npm@6 && npm i --verbose"
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7 && npm i --verbose"
+  npm7-local:
+    name: NPM 7 install local on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14, 16]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install NPM 7
+        run: npm i -g npm@7
+      - name: NPM install
+        run: npm i --verbose
+  npm6-docker:
+    name: NPM 6 install in Docker image node:${{ matrix.node-image }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-image: ['14', '14-alpine', '16', '16-alpine']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: NPM install
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@6 && npm i --verbose"
   npm6-local:
     name: NPM 6 install local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12, 14, 16]
+        node: [14, 16]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
