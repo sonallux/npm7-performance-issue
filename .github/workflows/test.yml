@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7.24.0 && time npm i --legacy-peer-deps --verbose"
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "apt-get install time && npm i -g npm@7.24.0 && time npm i --legacy-peer-deps --verbose"
   npm7-legacy-peer-deps-local:
     name: NPM 7 install --legacy-peer-deps local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7.24.0 && time npm i --verbose"
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "apt-get install time && npm i -g npm@7.24.0 && time npm i --verbose"
   npm7-local:
     name: NPM 7 install local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@6.14.15 && time npm i --verbose"
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "apt-get install time && npm i -g npm@6.14.15 && time npm i --verbose"
   npm6-local:
     name: NPM 6 install local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
