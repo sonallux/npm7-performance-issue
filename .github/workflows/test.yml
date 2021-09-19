@@ -5,35 +5,40 @@ on:
   workflow_dispatch:
 
 jobs:
+  npm7-docker:
+    name: NPM 7 install in Docker image node:${{ matrix.node-image }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-image: ['14.17.6', '16.9.1']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: NPM install
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "apt-get update && apt-get install time && npm i -g npm@7.24.0 && time npm i --verbose"
   npm7-legacy-peer-deps-docker:
     name: NPM 7 install legacy-peer-deps in Docker image node:${{ matrix.node-image }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-image: ['14.17.6-alpine', '16.9.1-alpine']
+        node-image: ['14.17.6', '16.9.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7.24.0 && time npm i --legacy-peer-deps --verbose"
-  npm7-legacy-peer-deps-local:
-    name: NPM 7 install --legacy-peer-deps local on Node ${{ matrix.node }}
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "apt-get update && apt-get install time && npm i -g npm@7.24.0 && time npm i --legacy-peer-deps --verbose"
+  npm6-docker:
+    name: NPM 6 install in Docker image node:${{ matrix.node-image }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['14.17.6', '16.9.1']
+        node-image: ['14.17.6', '16.9.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node ${{ matrix.node }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
-      - name: Install NPM 7
-        run: npm i -g npm@7.24.0
       - name: NPM install
-        run: time npm i --legacy-peer-deps --verbose
-  npm7-docker:
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "apt-get update && apt-get install time && npm i -g npm@6.14.15 && time npm i --verbose"
+  npm7-docker-alpine:
     name: NPM 7 install in Docker image node:${{ matrix.node-image }}
     runs-on: ubuntu-latest
     strategy:
@@ -44,6 +49,28 @@ jobs:
         uses: actions/checkout@v2
       - name: NPM install
         run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7.24.0 && time npm i --verbose"
+  npm7-legacy-peer-deps-docker-alpine:
+    name: NPM 7 install legacy-peer-deps in Docker image node:${{ matrix.node-image }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-image: ['14.17.6-alpine', '16.9.1-alpine']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: NPM install
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7.24.0 && time npm i --legacy-peer-deps --verbose"
+  npm6-docker-alpine:
+    name: NPM 6 install in Docker image node:${{ matrix.node-image }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-image: ['14.17.6-alpine', '16.9.1-alpine']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: NPM install
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@6.14.15 && time npm i --verbose"
   npm7-local:
     name: NPM 7 install local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
@@ -61,17 +88,23 @@ jobs:
         run: npm i -g npm@7.24.0
       - name: NPM install
         run: time npm i --verbose
-  npm6-docker:
-    name: NPM 6 install in Docker image node:${{ matrix.node-image }}
+  npm7-legacy-peer-deps-local:
+    name: NPM 7 install --legacy-peer-deps local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-image: ['14.17.6-alpine', '16.9.1-alpine']
+        node: ['14.17.6', '16.9.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install NPM 7
+        run: npm i -g npm@7.24.0
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@6.14.15 && time npm i --verbose"
+        run: time npm i --legacy-peer-deps --verbose
   npm6-local:
     name: NPM 6 install local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
