@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-image: ['14', '14-alpine', '16', '16-alpine']
+        node-image: ['14.17.6', '16.19.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7 && npm i --legacy-peer-deps --verbose"
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7.24.0 && npm i --legacy-peer-deps --verbose"
   npm7-legacy-peer-deps-local:
     name: NPM 7 install --legacy-peer-deps local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [14, 16]
+        node: ['14.17.6', '16.19.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install NPM 7
-        run: npm i -g npm@7
+        run: npm i -g npm@7.24.0
       - name: NPM install
         run: npm i --legacy-peer-deps --verbose
   npm7-docker:
@@ -38,18 +38,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-image: ['14', '14-alpine', '16', '16-alpine']
+        node-image: ['14.17.6', '16.19.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7 && npm i --verbose"
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@7.24.0 && npm i --verbose"
   npm7-local:
     name: NPM 7 install local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [14, 16]
+        node: ['14.17.6', '16.19.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -58,7 +58,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install NPM 7
-        run: npm i -g npm@7
+        run: npm i -g npm@7.24.0
       - name: NPM install
         run: npm i --verbose
   npm6-docker:
@@ -66,18 +66,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-image: ['14', '14-alpine', '16', '16-alpine']
+        node-image: ['14.17.6', '16.19.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM install
-        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@6 && npm i --verbose"
+        run: docker run --rm -v $PWD:/app -w /app node:${{ matrix.node-image }} /bin/sh -c "npm i -g npm@6.14.15 && npm i --verbose"
   npm6-local:
     name: NPM 6 install local on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [14, 16]
+        node: ['14.17.6', '16.19.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -86,6 +86,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install NPM 6
-        run: npm i -g npm@6
+        run: npm i -g npm@6.14.15
       - name: NPM install
         run: npm i --verbose
